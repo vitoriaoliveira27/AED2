@@ -1,82 +1,91 @@
 import math
+from typing import List
 
-def encontrar_soma_maxima_cruzando_meio(lista: list[int], inicio: int, meio: int, fim: int) -> int:
+def _find_max_crossing_sum(arr: List[int], low: int, mid: int, high: int) -> int:
     """
-    Encontra a soma máxima de uma subseção que OBRIGATORIAMENTE cruza o meio da lista.
-    Complexidade: O(n)
-    """
-    soma_atual = 0
-    soma_maxima_esquerda = -math.inf
-
-    for i in range(meio, inicio - 1, -1):
-        soma_atual += lista[i]
-        if soma_atual > soma_maxima_esquerda:
-            soma_maxima_esquerda = soma_atual
-
-    soma_atual = 0
-    soma_maxima_direita = -math.inf
-
-    for i in range(meio + 1, fim + 1):
-        soma_atual += lista[i]
-        if soma_atual > soma_maxima_direita:
-            soma_maxima_direita = soma_atual
-
-    return soma_maxima_esquerda + soma_maxima_direita
-
-def _encontrar_soma_maxima_recursivo(lista: list[int], inicio: int, fim: int) -> int:
-    """Função auxiliar recursiva que implementa a lógica de Divisão e Conquista."""
-
-    if inicio == fim:
-        return lista[inicio]
-
-    meio = (inicio + fim) // 2
-
-    soma_maxima_esquerda = _encontrar_soma_maxima_recursivo(lista, inicio, meio)
-
-    soma_maxima_direita = _encontrar_soma_maxima_recursivo(lista, meio + 1, fim)
-
-    soma_maxima_cruzada = encontrar_soma_maxima_cruzando_meio(lista, inicio, meio, fim)
-
-    return max(soma_maxima_esquerda, soma_maxima_direita, soma_maxima_cruzada)
-
-
-def resolver_soma_maxima(lista: list[int]) -> int:
-    """
-    Função principal para resolver o Problema da Subseção de Soma Máxima
-    usando o paradigma de Divisão e Conquista.
+    Finds the maximum sum of a subarray that MUST cross the midpoint of the array.
+    Complexity: O(n)
 
     Args:
-        lista (list[int]): Uma lista de inteiros (positivos e/ou negativos).
+        arr (List[int]): The full array.
+        low (int): The starting index of the subarray to consider.
+        mid (int): The midpoint index.
+        high (int): The ending index of the subarray to consider.
 
     Returns:
-        int: O valor da soma da subseção contígua de maior valor.
+        int: The maximum sum of a subarray crossing the midpoint.
     """
-    if not lista:
+    current_sum = 0
+    max_left_sum = -math.inf
+
+    for i in range(mid, low - 1, -1):
+        current_sum += arr[i]
+        if current_sum > max_left_sum:
+            max_left_sum = current_sum
+
+    current_sum = 0
+    max_right_sum = -math.inf
+
+    for i in range(mid + 1, high + 1):
+        current_sum += arr[i]
+        if current_sum > max_right_sum:
+            max_right_sum = current_sum
+
+    return max_left_sum + max_right_sum
+
+def _find_max_subarray_recursive(arr: List[int], low: int, high: int) -> int:
+    """Recursive helper function that implements the Divide and Conquer logic."""
+
+    if low == high:
+        return arr[low]
+
+    mid = (low + high) // 2
+
+    max_sum_left = _find_max_subarray_recursive(arr, low, mid)
+    max_sum_right = _find_max_subarray_recursive(arr, mid + 1, high)
+
+    max_sum_crossing = _find_max_crossing_sum(arr, low, mid, high)
+    
+    return max(max_sum_left, max_sum_right, max_sum_crossing)
+
+
+def max_subarray_sum(arr: List[int]) -> int:
+    """
+    Main function to solve the Maximum Subarray Problem
+    using the Divide and Conquer paradigm.
+
+    Args:
+        arr (List[int]): A list of integers (positive and/or negative).
+
+    Returns:
+        int: The sum of the contiguous subarray with the largest sum.
+    """
+    if not arr:
         return 0
 
-    return _encontrar_soma_maxima_recursivo(lista, 0, len(lista) - 1)
+    return _find_max_subarray_recursive(arr, 0, len(arr) - 1)
 
 if __name__ == "__main__":
-    print("🧪 Iniciando testes do algoritmo de Soma Máxima de Subseção...")
+    print("🧪 Starting tests for the Maximum Subarray Sum algorithm...")
 
-    lista_1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-    print(f"\nLista: {lista_1}")
-    print(f"Soma máxima encontrada: {resolver_soma_maxima(lista_1)} (Esperado: 6)")
+    arr1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+    print(f"\nArray: {arr1}")
+    print(f"Maximum sum found: {max_subarray_sum(arr1)} (Expected: 6)")
     print("-" * 40)
 
-    lista_2 = [-10, -1, -5, -2, -8]
-    print(f"Lista: {lista_2}")
-    print(f"Soma máxima encontrada: {resolver_soma_maxima(lista_2)} (Esperado: -1)")
+    arr2 = [-10, -1, -5, -2, -8]
+    print(f"Array: {arr2}")
+    print(f"Maximum sum found: {max_subarray_sum(arr2)} (Expected: -1)")
     print("-" * 40)
     
-    lista_3 = [1, 2, 3, 4, 5]
-    print(f"Lista: {lista_3}")
-    print(f"Soma máxima encontrada: {resolver_soma_maxima(lista_3)} (Esperado: 15)")
+    arr3 = [1, 2, 3, 4, 5]
+    print(f"Array: {arr3}")
+    print(f"Maximum sum found: {max_subarray_sum(arr3)} (Expected: 15)")
     print("-" * 40)
     
-    lista_4 = []
-    print(f"Lista: {lista_4}")
-    print(f"Soma máxima encontrada: {resolver_soma_maxima(lista_4)} (Esperado: 0)")
+    arr4 = []
+    print(f"Array: {arr4}")
+    print(f"Maximum sum found: {max_subarray_sum(arr4)} (Expected: 0)")
     print("-" * 40)
 
-    print("✅ Testes concluídos.")
+    print("✅ Tests completed.")

@@ -1,65 +1,68 @@
 import math
+from typing import List
 
-def _explorar_a_partir_de(indice_atual: int, soma_atual: int, lista: list[int], soma_maxima_container: list[float]):
+def _explore_from(current_index: int, current_sum: int, arr: List[int], max_sum_container: List[float]):
     """
-    Função recursiva que explora todas as subseções que começam em um determinado ponto.
-    Esta é a essência do "backtracking" para este problema.
+    Recursive function that explores all subarrays starting from a given point.
+    This is the essence of the "backtracking" approach for this problem.
 
     Args:
-        indice_atual (int): O índice do elemento que estamos adicionando à subseção.
-        soma_atual (int): A soma da subseção construída até o passo anterior.
-        lista (list[int]): A lista original completa.
-        soma_maxima_container (list[float]): Um container mutável para guardar a maior soma encontrada globalmente.
+        current_index (int): The index of the element being added to the subarray.
+        current_sum (int): The sum of the subarray built up to the previous step.
+        arr (List[int]): The complete original list.
+        max_sum_container (List[float]): A mutable container to hold the maximum sum found globally.
     """
-    if indice_atual >= len(lista):
+    if current_index >= len(arr):
         return
-    nova_soma_subsecao = soma_atual + lista[indice_atual]
+    
+    new_subarray_sum = current_sum + arr[current_index]
 
-    soma_maxima_container[0] = max(soma_maxima_container[0], nova_soma_subsecao)
+    max_sum_container[0] = max(max_sum_container[0], new_subarray_sum)
 
-    _explorar_a_partir_de(indice_atual + 1, nova_soma_subsecao, lista, soma_maxima_container)
+    _explore_from(current_index + 1, new_subarray_sum, arr, max_sum_container)
 
-def resolver_soma_maxima_backtracking(lista: list[int]) -> int:
+def max_subarray_sum_backtracking(arr: List[int]) -> int:
     """
-    Função principal para resolver o Problema da Subseção de Soma Máxima
-    usando o paradigma de Backtracking (busca exaustiva recursiva).
+    Main function to solve the Maximum Subarray Problem
+    using the Backtracking paradigm (recursive exhaustive search).
 
     Args:
-        lista (list[int]): Uma lista de inteiros.
+        arr (List[int]): A list of integers.
 
     Returns:
-        int: O valor da soma da subseção contígua de maior valor.
+        int: The value of the sum of the contiguous subarray with the largest value.
     """
-    if not lista:
+    if not arr:
         return 0
 
-    soma_maxima_container = [-math.inf]
+    max_sum_container = [-math.inf]
 
-    for i in range(len(lista)):
-        _explorar_a_partir_de(i, 0, lista, soma_maxima_container)
+    for i in range(len(arr)):
+        _explore_from(i, 0, arr, max_sum_container)
 
-    return int(soma_maxima_container[0])
+    return int(max_sum_container[0])
 
 if __name__ == "__main__":
-    print("🧪 Iniciando testes do algoritmo de Soma Máxima com Backtracking...")
-    lista_1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-    print(f"\nLista: {lista_1}")
-    print(f"Soma máxima encontrada: {resolver_soma_maxima_backtracking(lista_1)} (Esperado: 6)")
+    print("🧪 Starting tests for the Maximum Subarray Sum algorithm with Backtracking...")
+    
+    arr1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+    print(f"\nArray: {arr1}")
+    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr1)} (Expected: 6)")
     print("-" * 40)
 
-    lista_2 = [-10, -1, -5, -2, -8]
-    print(f"Lista: {lista_2}")
-    print(f"Soma máxima encontrada: {resolver_soma_maxima_backtracking(lista_2)} (Esperado: -1)")
+    arr2 = [-10, -1, -5, -2, -8]
+    print(f"Array: {arr2}")
+    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr2)} (Expected: -1)")
     print("-" * 40)
     
-    lista_3 = [1, 2, 3, 4, 5]
-    print(f"Lista: {lista_3}")
-    print(f"Soma máxima encontrada: {resolver_soma_maxima_backtracking(lista_3)} (Esperado: 15)")
+    arr3 = [1, 2, 3, 4, 5]
+    print(f"Array: {arr3}")
+    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr3)} (Expected: 15)")
     print("-" * 40)
     
-    lista_4 = []
-    print(f"Lista: {lista_4}")
-    print(f"Soma máxima encontrada: {resolver_soma_maxima_backtracking(lista_4)} (Esperado: 0)")
+    arr4 = []
+    print(f"Array: {arr4}")
+    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr4)} (Expected: 0)")
     print("-" * 40)
 
-    print("✅ Testes concluídos.")
+    print("✅ Tests completed.")
