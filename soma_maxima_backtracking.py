@@ -1,5 +1,7 @@
 import math
 from typing import List
+import random
+
 
 def _explore_from(current_index: int, current_sum: int, arr: List[int], max_sum_container: List[float]):
     """
@@ -63,6 +65,24 @@ if __name__ == "__main__":
     arr4 = []
     print(f"Array: {arr4}")
     print(f"Maximum sum found: {max_subarray_sum_backtracking(arr4)} (Expected: 0)")
+    print("-" * 40)
+    
+    # Array grande com números positivos e negativos
+    arr5 = [random.randint(-100, 100) for _ in range(100)]
+    print(f"Array (100 elementos): {arr5}")
+    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr5)}")
+    print("-" * 40)
+
+    # Array grande com todos positivos
+    arr6 = [random.randint(1, 100) for _ in range(200)]
+    print(f"Array (200 elementos, positivos): {arr6}")
+    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr6)}")
+    print("-" * 40)
+
+    # Array grande com todos negativos
+    arr7 = [random.randint(-100, -1) for _ in range(150)]
+    print(f"Array (150 elementos, negativos): {arr7}")
+    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr7)}")
     print("-" * 40)
 
     print("✅ Tests completed.")
