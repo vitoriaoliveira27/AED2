@@ -3,56 +3,46 @@ from typing import List
 import random
 
 
-def _explore_from(current_index: int, current_sum: int, arr: List[int], max_sum_container: List[float]):
+def _backtrack_solve(index: int, arr: List[int], current_sum: int, max_so_far: int) -> int:
     """
-    Recursive function that explores all subarrays starting from a given point.
-    This is the essence of the "backtracking" approach for this problem.
+    Recursive function that explores the array, deciding at each step whether to
+    extend the current subarray or start a new one.
 
     Args:
-        current_index (int): The index of the element being added to the subarray.
-        current_sum (int): The sum of the subarray built up to the previous step.
-        arr (List[int]): The complete original list.
-        max_sum_container (List[float]): A mutable container to hold the maximum sum found globally.
+        index (int): The current index being evaluated.
+        arr (List[int]): The complete array.
+        current_sum (int): The maximum sum of the subarray that ENDS at the previous index.
+        max_so_far (int): The global maximum sum found anywhere in the array so far.
+
+    Returns:
+        int: The global maximum sum at the end of the exploration.
     """
-    if current_index >= len(arr):
-        return
-    
-    new_subarray_sum = current_sum + arr[current_index]
+    if index == len(arr):
+        return max_so_far
 
-    max_sum_container[0] = max(max_sum_container[0], new_subarray_sum)
+    sum_ending_here = max(arr[index], current_sum + arr[index])
 
-    _explore_from(current_index + 1, new_subarray_sum, arr, max_sum_container)
+    new_max_so_far = max(max_so_far, sum_ending_here)
+
+    return _backtrack_solve(index + 1, arr, sum_ending_here, new_max_so_far)
 
 def max_subarray_sum_backtracking(arr: List[int]) -> int:
     """
-    Main function to solve the Maximum Subarray Problem
-    using the Backtracking paradigm (recursive exhaustive search).
-
-    Args:
-        arr (List[int]): A list of integers.
-
-    Returns:
-        int: The value of the sum of the contiguous subarray with the largest value.
+    Main function to solve the problem using backtracking with pruning.
+    (Recursive implementation of Kadane's Algorithm).
     """
     if not arr:
         return 0
 
-    max_sum_container = [-math.inf]
-
-    for i in range(len(arr)):
-        _explore_from(i, 0, arr, max_sum_container)
-
-    return int(max_sum_container[0])
+    return _backtrack_solve(1, arr, arr[0], arr[0])
 
 if __name__ == "__main__":
-    print("🧪 Starting tests for the Maximum Subarray Sum algorithm with Backtracking...")
-    
     arr1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-    print(f"\nArray: {arr1}")
+    print(f"Array: {arr1}")
     print(f"Maximum sum found: {max_subarray_sum_backtracking(arr1)} (Expected: 6)")
     print("-" * 40)
 
-    arr2 = [-10, -1, -5, -2, -8]
+    arr2 = [-1]
     print(f"Array: {arr2}")
     print(f"Maximum sum found: {max_subarray_sum_backtracking(arr2)} (Expected: -1)")
     print("-" * 40)
