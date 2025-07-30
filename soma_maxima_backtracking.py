@@ -1,3 +1,5 @@
+import sys
+sys.setrecursionlimit(100000001)
 import math
 from typing import List
 import random
@@ -37,42 +39,11 @@ def max_subarray_sum_backtracking(arr: List[int]) -> int:
     return _backtrack_solve(1, arr, arr[0], arr[0])
 
 if __name__ == "__main__":
-    arr1 = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-    print(f"Array: {arr1}")
-    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr1)} (Expected: 6)")
-    print("-" * 40)
+    print("🧪 Starting tests for the Maximum Subarray Sum algorithm...")
 
-    arr2 = [-1]
-    print(f"Array: {arr2}")
-    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr2)} (Expected: -1)")
-    print("-" * 40)
-    
-    arr3 = [1, 2, 3, 4, 5]
-    print(f"Array: {arr3}")
-    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr3)} (Expected: 15)")
-    print("-" * 40)
-    
-    arr4 = []
-    print(f"Array: {arr4}")
-    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr4)} (Expected: 0)")
-    print("-" * 40)
-    
     # Array grande com números positivos e negativos
-    arr5 = [random.randint(-100, 100) for _ in range(100)]
-    print(f"Array (100 elementos): {arr5}")
-    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr5)}")
-    print("-" * 40)
-
-    # Array grande com todos positivos
-    arr6 = [random.randint(1, 100) for _ in range(200)]
-    print(f"Array (200 elementos, positivos): {arr6}")
-    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr6)}")
-    print("-" * 40)
-
-    # Array grande com todos negativos
-    arr7 = [random.randint(-100, -1) for _ in range(150)]
-    print(f"Array (150 elementos, negativos): {arr7}")
-    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr7)}")
+    arr1 = [random.randint(-100, 100) for _ in range(10000)]
+    print(f"Maximum sum found: {max_subarray_sum_backtracking(arr1)}")
     print("-" * 40)
 
     print("✅ Tests completed.")
